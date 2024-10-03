@@ -91,7 +91,7 @@ $prism();
 
 ### Using Strings or Views
 
-Both `withPrompt()` and `withSystemMessage()` can accept either a string or a Laravel View:
+Both `withPrompt()` and `withSystemPrompt()` can accept either a string or a Laravel View:
 
 ```php
 <?php
@@ -99,13 +99,13 @@ Both `withPrompt()` and `withSystemMessage()` can accept either a string or a La
 // Using a string
 Prism::text()
   ->using('anthropic', 'claude-3-sonnet')
-  ->withSystemMessage('You are a helpful assistant.')
+  ->withSystemPrompt('You are a helpful assistant.')
   ->withPrompt('Tell me a joke about programming.');
 
 // Using a View
 Prism::text()
   ->using('anthropic', 'claude-3-sonnet')
-  ->withSystemMessage(view('primps.assistant'))
+  ->withSystemPrompt(view('primps.assistant'))
   ->withPrompt(view('prompts.tell-joke', ['topic' => 'programming']));
 ```
 

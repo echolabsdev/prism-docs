@@ -12,7 +12,7 @@ Here's a quick example of how you can generate text using Prism:
 
 $prism = Prism::text()
     ->using('anthropic', 'claude-3-5-sonnet-20240620')
-    ->withSystemMessage(view('prompts.nyx'))
+    ->withSystemPrompt(view('prompts.nyx'))
     ->withPrompt('Explain quantum computing to a 5-year-old.');
 
 $response = $prism();
@@ -24,7 +24,7 @@ echo $response->text;
 <?php
 $prism = Prism::text()
     ->using('openai', 'gpt-4o')
-    ->withSystemMessage(view('prompts.nyx'))
+    ->withSystemPrompt(view('prompts.nyx'))
     ->withPrompt('Explain quantum computing to a 5-year-old.');
 
 echo $prism()->text;
@@ -34,7 +34,7 @@ echo $prism()->text;
 <?php
 $prism = Prism::text()
     ->using('ollama', 'qwen2.5:14b')
-    ->withSystemMessage(view('prompts.nyx'))
+    ->withSystemPrompt(view('prompts.nyx'))
     ->withPrompt('Explain quantum computing to a 5-year-old.');
 
 echo $prism()->text;

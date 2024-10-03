@@ -29,7 +29,7 @@ $calculatorTool = Tool::as('calculate')
 // Create the agent
 $prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
-    ->withSystemMessage(
+    ->withSystemPrompt(
         'You are solving math problems. ' .
         'Reason step by step. ' .
         'Use the calculator when necessary. ' .

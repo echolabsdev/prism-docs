@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
             'my-custom-model',
             fn () => Prism::text()
                 ->using('anthropic', 'claude-3-sonnet-20240229')
-                ->withSystemMessage('You are a helpful assistant.')
+                ->withSystemPrompt('You are a helpful assistant.')
         );
     }
 }
