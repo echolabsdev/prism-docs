@@ -13,9 +13,6 @@ hero:
     - theme: alt
       text: Github
       link: https://github.com/echolabsdev/prism
-    - theme: alt
-      text: Sponsor 
-      link: https://github.com/sponsors/sixlive
 
 features:
   - title: Elegant Provider Integrations
