@@ -42,7 +42,7 @@ return [
 
 The `prism_server` section allows you to enable or disable the Prism Server feature, which we cover in more detail in [prism server](prism-server) section.
 
-### Providers
+### Drivers
 
 The `providers` section is where you configure your AI service providers. Let's look at each one:
 
@@ -111,9 +111,5 @@ Prism::text()
 ```
 
 Just change `'openai'` to `'anthropic'` or `'ollama'` to switch providers.
-
-## Adding Custom Providers
-
-Thanks to Prism's driver pattern, you can easily add custom providers. We'll cover this in the [Providers](/providers) section.
 
 That's it for the basic configuration! With Prism's flexible setup, you're now ready to start generating text using various AI providers, including Ollama, right out of the box.
