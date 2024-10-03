@@ -15,6 +15,8 @@ Prism uses a driver pattern to support multiple AI providers. This design makes 
 After installation, you'll find the Prism configuration file at `config/prism.php`. Let's break down its key sections:
 
 ```php
+<?php
+
 return [
     'prism_server' => [
         'enabled' => env('PRISM_SERVER_ENABLED', true),

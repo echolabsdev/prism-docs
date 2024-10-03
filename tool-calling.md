@@ -36,11 +36,13 @@ Now that we have our weather tool, let's use it in a Prism request:
 ```php
 <?php
 
-$response = Prism::text()
+$prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
     ->withPrompt("What's the weather like in Paris today? Should I bring a coat?")
     ->withTools([$weatherTool])
-    ->withMaxSteps(3)(); // Allow up to 3 steps for tool usage
+    ->withMaxSteps(3); // Allow up to 3 steps for tool usage and response generation
+
+$response = $prism();
 ```
 
 In this example, the AI might decide to use the weather tool to get information about Paris before answering the question.

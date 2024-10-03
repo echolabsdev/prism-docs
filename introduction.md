@@ -9,32 +9,35 @@ Here's a quick example of how you can generate text using Prism:
 ::: code-group
 ```php [Anthropic]
 <?php
-$response = Prism::text()
+
+$prism = Prism::text()
     ->using('anthropic', 'claude-3-5-sonnet-20240620')
     ->withSystemMessage(view('prompts.nyx'))
-    ->withPrompt('Explain quantum computing to a 5-year-old.')();
+    ->withPrompt('Explain quantum computing to a 5-year-old.');
+
+$response = $prism();
 
 echo $response->text;
 ```
 
 ```php [OpenAI]
 <?php
-$response = Prism::text()
+$prism = Prism::text()
     ->using('openai', 'gpt-4o')
     ->withSystemMessage(view('prompts.nyx'))
-    ->withPrompt('Explain quantum computing to a 5-year-old.')();
+    ->withPrompt('Explain quantum computing to a 5-year-old.');
 
-echo $response->text;
+echo $prism()->text;
 ```
 
 ```php [Ollama]
 <?php
-$response = Prism::text()
+$prism = Prism::text()
     ->using('ollama', 'qwen2.5:14b')
     ->withSystemMessage(view('prompts.nyx'))
-    ->withPrompt('Explain quantum computing to a 5-year-old.')();
+    ->withPrompt('Explain quantum computing to a 5-year-old.');
 
-echo $response->text;
+echo $prism()->text;
 ```
 :::
 

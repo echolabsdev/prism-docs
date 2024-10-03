@@ -11,6 +11,8 @@ One effective approach to implementing agents in Prism is to allow the LLM to ch
 Let's create an agent that solves math problems using Prism. This agent will have a calculator tool (using the `bcmath` PHP extension) that it can call to evaluate mathematical expressions.
 
 ```php
+<?php
+
 use EchoLabs\Prism\Facades\Prism;
 use EchoLabs\Prism\Facades\Tool;
 
@@ -25,7 +27,7 @@ $calculatorTool = Tool::as('calculate')
     });
 
 // Create the agent
-$response = Prism::text()
+$prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
     ->withSystemMessage(
         'You are solving math problems. ' .
@@ -41,7 +43,9 @@ $response = Prism::text()
         'How much money does he earn in one day?'
     )
     ->withMaxSteps(10)
-    ->withTools([$calculatorTool])();
+    ->withTools([$calculatorTool]);
+
+$response = $prism();
 
 echo "ANSWER: " . $response->text;
 ```

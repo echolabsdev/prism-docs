@@ -80,6 +80,8 @@ class AppServiceProvider extends ServiceProvider
 To use your custom driver with a provider, you'll need to add it to your `config/prism.php` file:
 
 ```php
+<?php
+
 'providers' => [
     // ... other providers ...
     'my-custom-provider' => [
@@ -92,9 +94,13 @@ To use your custom driver with a provider, you'll need to add it to your `config
 Now you can use your custom driver in your Prism calls:
 
 ```php
-$response = Prism::text()
+<?php
+
+$prism = Prism::text()
     ->using('my-custom-provider', 'model-name')
-    ->withPrompt('Hello, custom AI!')();
+    ->withPrompt('Hello, custom AI!');
+
+$prism();
 ```
 
 ## Best Practices for Custom Drivers
