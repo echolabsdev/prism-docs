@@ -153,7 +153,7 @@ Now you can use your custom provider just like any built-in provider:
 ```php
 use EchoLabs\Prism\Facades\Prism;
 
-$response = Prism::using('superai', 'super-model-v1')
-    ->generateText()
+$response = Prism::text()
+    ->using('superai', 'super-model-v1')
     ->withPrompt('Tell me a joke about programming.')();
 ```

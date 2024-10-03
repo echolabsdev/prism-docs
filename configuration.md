@@ -105,8 +105,8 @@ If you're running Ollama locally with default settings, you won't even need to c
 To use a specific provider in your application, you can do:
 
 ```php
-Prism::using('openai', 'gpt-4o') // [!code focus]
-  ->generateText()
+Prism::text()
+  ->using('openai', 'gpt-4o') // [!code focus]
   ->withPrompt('Hello, AI!');
 ```
 

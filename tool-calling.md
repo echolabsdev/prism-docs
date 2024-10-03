@@ -18,7 +18,7 @@ Here's what makes up a tool in Prism:
 Let's create a simple weather tool to see how this works in practice:
 
 ```php
-use EchoLabs\Prism\Facades\Tool;
+<?php
 
 $weatherTool = Tool::as('weather')
     ->for('Get current weather conditions')
@@ -34,10 +34,10 @@ $weatherTool = Tool::as('weather')
 Now that we have our weather tool, let's use it in a Prism request:
 
 ```php
-use EchoLabs\Prism\Facades\Prism;
+<?php
 
-$response = Prism::using('anthropic', 'claude-3-sonnet')
-    ->generateText()
+$response = Prism::text()
+    ->using('anthropic', 'claude-3-sonnet')
     ->withPrompt("What's the weather like in Paris today? Should I bring a coat?")
     ->withTools([$weatherTool])
     ->withMaxSteps(3)(); // Allow up to 3 steps for tool usage

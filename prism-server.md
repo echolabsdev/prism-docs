@@ -33,8 +33,8 @@ class AppServiceProvider extends ServiceProvider
     {
         PrismServer::register(
             'my-custom-model',
-            fn () => Prism::using('anthropic', 'claude-3-sonnet-20240229')
-                ->generateText()
+            fn () => Prism::text()
+                ->using('anthropic', 'claude-3-sonnet-20240229')
                 ->withSystemMessage('You are a helpful assistant.')
         );
     }

@@ -6,21 +6,21 @@ Prism is constantly evolving to meet the needs of developers working with Large 
 
 Our immediate focus is on refining existing functionalities and adding crucial features:
 
-1. **`generateText` Refinements**: Enhancing the core text generation capabilities to provide more accurate and contextually relevant outputs.
+1. **`text` Refinements**: Enhancing the core text generation capabilities to provide more accurate and contextually relevant outputs.
 
 2. **Error Handling Refinements**: Improving the robustness of the package by implementing more comprehensive error handling mechanisms.
 
 3. **Tool Use Refinements**: Optimizing the way Prism integrates and utilizes external tools, making it easier for developers to extend the AI's capabilities.
 
-4. **`generateText` Image Support**: Adding the ability to generate and process images alongside text, expanding Prism's multimodal capabilities.
+4. **`text` Image Support**: Adding the ability to generate and process images alongside text, expanding Prism's multimodal capabilities.
 
 ## Mid-Term Goals
 
 Looking ahead, we plan to introduce new functionalities that will significantly enhance Prism's versatility:
 
-1. **`generateObject` Functionality**: Implementing structured data generation, allowing for more precise and type-safe outputs in complex scenarios.
+1. **`object` Functionality**: Implementing structured data generation, allowing for more precise and type-safe outputs in complex scenarios.
 
-2. **`generateTextStream` Functionality**: Enabling streaming of generated text, which will be particularly useful for real-time applications and improved user experiences.
+2. **`textStream` Functionality**: Enabling streaming of generated text, which will be particularly useful for real-time applications and improved user experiences.
 
 3. **`embeddings` Functionality**: Introducing support for text embeddings, opening up possibilities for semantic search, text classification, and other advanced NLP tasks.
 

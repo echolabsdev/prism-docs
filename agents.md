@@ -25,8 +25,8 @@ $calculatorTool = Tool::as('calculate')
     });
 
 // Create the agent
-$response = Prism::using('anthropic', 'claude-3-sonnet')
-    ->generateText()
+$response = Prism::text()
+    ->using('anthropic', 'claude-3-sonnet')
     ->withSystemMessage(
         'You are solving math problems. ' .
         'Reason step by step. ' .
@@ -50,7 +50,7 @@ In this example:
 
 1. We define a `calculate` tool using the `Tool` facade. This tool uses PHP's `bcmath` extension for precise mathematical calculations.
 
-2. We create an agent using Prism's `generateText()` method, setting up the system message, prompt, and including our calculator tool.
+2. We create an agent using Prism's `text()` method, setting up the system message, prompt, and including our calculator tool.
 
 3. We use `withMaxSteps(10)` to allow the agent to make up to 10 steps in its reasoning process.
 
