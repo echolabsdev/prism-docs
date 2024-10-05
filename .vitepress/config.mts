@@ -11,6 +11,7 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Docs", link: "/introduction" },
       { text: "Sponsor", link: "https://github.com/sponsors/sixlive" },
+      { text: "Github", link: "https://github.com/echolabsdev/prism" },
     ],
 
     sidebar: [
