@@ -3,6 +3,16 @@ import { defineConfig } from "vitepress";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Prism",
+  head: [
+    [
+      "script",
+      {
+        defer: "",
+        src: "https://analytics.echolabs.dev/script.js",
+        "data-website-id": "38989bda-90b5-47af-81ab-57a823480b9e",
+      },
+    ],
+  ],
   description:
     "Prism is a powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
   themeConfig: {
