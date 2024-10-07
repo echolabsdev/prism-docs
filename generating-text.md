@@ -104,7 +104,7 @@ Prism::text()
 // Using a View
 Prism::text()
   ->using('anthropic', 'claude-3-sonnet')
-  ->withSystemPrompt(view('primps.assistant'))
+  ->withSystemPrompt(view('prompts.assistant'))
   ->withPrompt(view('prompts.tell-joke', ['topic' => 'programming']));
 ```
 
