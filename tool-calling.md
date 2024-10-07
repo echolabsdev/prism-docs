@@ -75,6 +75,95 @@ foreach ($response->steps as $step) {
 
 This allows you to see not just the final answer, but also how the AI arrived at its conclusion, including which tools it used and why. You still have access to all of the [text result](/generating-text.html#accessing-generated-data) outputs.
 
+## Defining Complex Tools
+
+Sometimes tools are more complex and it doesn't make sense to use a Closure. You can also define tools as callable classes. 
+
+Here is an example of a simplistic search tool using the [SerpAPI](https://serpapi.com/).
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tools;
+
+use EchoLabs\Prism\Tool;
+use Illuminate\Support\Facades\Http;
+
+class SearchTool extends Tool
+{
+    public function __construct()
+    {
+        $this
+            ->as('search')
+            ->for('useful when you need to search for current events')
+            ->withParameter('query', 'Detailed search query. Best to search one topic at a time.', 'string')
+            ->using($this);
+    }
+
+    public function __invoke(string $query): string
+    {
+        $response = Http::get('https://serpapi.com/search', [
+            'engine' => 'google',
+            'q' => $query,
+            'google_domain' => 'google.com',
+            'gl' => 'us',
+            'hl' => 'en',
+            'api_key' => env('SERPAPI_API_KEY'),
+        ]);
+
+        $results = collect($response->json('organic_results'));
+
+        $results->map(function ($result) {
+            return [
+                'title' => $result['title'],
+                'link' => $result['link'],
+                'snippet' => $result['snippet'],
+            ];
+        })->take(4);
+
+        return view('prompts.search-tool-results', [
+            'results' => $results,
+        ])->render();
+    }
+}
+```
+
+```blade
+<links>
+    @foreach ($results as $result)
+        <link>
+        <title>{{ $result['title'] }}</title>
+        <url>{{ $result['link'] }}</url>
+        <snippet>{{ $result['snippet'] }}</snippet>
+        </link>
+    @endforeach
+</links>
+
+ALWAYS CITE SOURCES AT THE END OF YOUR RESPONSE
+
+<example-sources>
+    Sources:
+    - [title](url)
+    - [title](url)
+</example-sources>
+```
+
+Then we just need to register to tool with a Prism.
+
+```php
+<?php
+
+$prism = Prism::text()
+    ->using('anthropic', 'claude-3-sonnet')
+    ->withPrompt("What's the weather like in Paris today?")
+    ->withTools([new SearchTool])
+    ->withMaxSteps(3);
+
+echo $prism()->text;
+```
+
 ## Best Practices for Tool Use
 
 1. **Keep it simple**: Start with a small number of well-defined tools.
