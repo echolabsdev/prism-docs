@@ -22,6 +22,7 @@ echo $response->text;
 
 ```php [OpenAI]
 <?php
+
 $prism = Prism::text()
     ->using('openai', 'gpt-4o')
     ->withSystemPrompt(view('prompts.nyx'))
@@ -32,6 +33,7 @@ echo $prism()->text;
 
 ```php [Ollama]
 <?php
+
 $prism = Prism::text()
     ->using('ollama', 'qwen2.5:14b')
     ->withSystemPrompt(view('prompts.nyx'))

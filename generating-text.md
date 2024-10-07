@@ -1,4 +1,3 @@
-
 # Generating Text
 Prism provides a powerful and flexible interface for generating text using Large Language Models (LLMs). This guide will walk you through the basics of text generation, configuration options, and how to access the generated data.
 
@@ -134,7 +133,7 @@ $prism();
 
 ## Accessing Generated Data
 
-The `GenerateTextResponse` object provides access to various aspects of the AI's response:
+The `TextResponse` object provides access to various aspects of the AI's response:
 
 ```php
 <?php
@@ -145,17 +144,38 @@ $prism = Prism::text()
 
 $response = $prism();
 
-// Access the generated text (proxy to the last `step`)
+// Access the generated text
+// If using multi-step generation, this is the text from the final step
 echo $response->text;
 
-// Get the number of tokens used
-echo "Prompt tokens: " . $response->usage['prompt_tokens'];
-echo "Completion tokens: " . $response->usage['completion_tokens'];
+// Finish reason enum
+echo $response->finishReason->name;
+
+// Array of ToolCalls
+// If using multi-step generation this is from the final step of generation
+$response->toolCalls;
+
+// Array of ToolResults
+// If using multi-step generation this is from the final step of generation
+$response->toolResults;
+
+// Get the total number of tokens used
+echo "Prompt tokens: " . $response->usage->promptTokens;
+echo "Completion tokens: " . $response->usage->completionTokens;
 
 // Access individual steps (for multi-step calls)
 foreach ($response->steps as $step) {
     echo "Step text: " . $step->text;
     echo "Finish reason: " . $step->finishReason->name;
+    echo "Prompt tokens: " . $step->usage->promptTokens;
+    echo "Completion tokens: " . $step->usage->completionTokens;
+
+    // Array of ToolCalls
+    $step->$toolCalls;
+    // Array of ToolResults
+    $step->toolResults;
+    // Array of Messages
+    $step->messages;
 }
 
 // Access response messages
@@ -166,6 +186,6 @@ foreach ($response->responseMessages as $message) {
 }
 ```
 
-The `GenerateTextResponse` object allows you to examine the details of the AI's response, including token usage, individual steps in multi-step interactions, and the content of response messages.
+The `TextResponse` object allows you to examine the details of the AI's response, including token usage, individual steps in multi-step interactions, and the content of response messages.
 
 By leveraging these features, you can create sophisticated AI-powered applications that generate text, engage in conversations, and provide valuable insights based on user input.

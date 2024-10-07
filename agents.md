@@ -16,34 +16,25 @@ Let's create an agent that solves math problems using Prism. This agent will hav
 use EchoLabs\Prism\Facades\Prism;
 use EchoLabs\Prism\Facades\Tool;
 
-// Define the calculator tool
-$calculatorTool = Tool::as('calculate')
-    ->for('A tool for evaluating mathematical expressions.')
-    ->withParameter('expression', 'The mathematical expression to evaluate')
-    ->using(function (string $expression) {
-        // Using bcmath for precise calculations
-        bcscale(2); // Set decimal precision to 2
-        return (string) eval('return ' . $expression . ';');
-    });
+$tools = [
+    Tool::as('weather')
+        ->for('useful when you need to search for current weather conditions')
+        ->withParameter('city', 'The city that you want the weather for')
+        // Simulate an API call
+        ->using(fn (string $city): string => 'The weather will be 75° and sunny'),
+    Tool::as('search')
+        ->for('useful for searching curret events or data')
+        ->withParameter('query', 'The detailed search query')
+        // Simulate an API call
+        ->using(fn (string $query): string => 'The tigers game is at 3pm in detroit'),
+];
 
 // Create the agent
 $prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
-    ->withSystemPrompt(
-        'You are solving math problems. ' .
-        'Reason step by step. ' .
-        'Use the calculator when necessary. ' .
-        'When you give the final answer, ' .
-        'provide an explanation for how you arrived at it.'
-    )
-    ->withPrompt(
-        'A taxi driver earns $94.61 per 1-hour of work. ' .
-        'If he works 12 hours a day and in 1 hour ' .
-        'he uses 12 liters of petrol with a price of $1.34 for 1 liter. ' .
-        'How much money does he earn in one day?'
-    )
+    ->withPrompt("What time is the Tigers game today in Detroit and should I wear a coat?")
     ->withMaxSteps(10)
-    ->withTools([$calculatorTool]);
+    ->withTools($tools);
 
 $response = $prism();
 
@@ -52,21 +43,21 @@ echo "ANSWER: " . $response->text;
 
 In this example:
 
-1. We define a `calculate` tool using the `Tool` facade. This tool uses PHP's `bcmath` extension for precise mathematical calculations.
+1. We define a `weather` and a `search` tool using the `Tool` facade. These tool simulate API requests to third party services.
 
 2. We create an agent using Prism's `text()` method, setting up the system message, prompt, and including our calculator tool.
 
 3. We use `withMaxSteps(10)` to allow the agent to make up to 10 steps in its reasoning process.
 
-4. The agent will use the calculator tool as needed to solve the problem, providing a step-by-step explanation and the final answer.
+4. The agent will use the tools as needed to answer the question.
 
 ## How It Works
 
-1. The agent receives the math problem in the prompt.
-2. It analyzes the problem and decides on the next step (calculation or reasoning).
-3. If a calculation is needed, it uses the `calculate` tool.
-4. The agent continues this process, potentially making multiple tool calls, until it reaches a conclusion or the maximum number of steps.
-5. Finally, it provides the answer with an explanation of the solution process.
+1. The agent receives the question in the prompt.
+2. It analyzes the problem and decides on the next step (search tool, weather tool, or reasoning).
+3. If a tool is needed, it uses the tools.
+4. The agent continues this process, potentially making multiple tool calls and analyzing the tool results, until it reaches a conclusion or the maximum number of steps.
+5. Finally, it provides the answer.
 
 This approach allows for flexible problem-solving, where the agent can adapt its strategy based on the specific problem and intermediate results.
 

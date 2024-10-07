@@ -7,7 +7,7 @@ In Prism, drivers play a crucial role in connecting your application to various 
 Before we dive into creating custom drivers, let's clarify the distinction between drivers and providers:
 
 - **Drivers** are the software components in Prism that handle the communication protocol with a specific type of AI service. They define how to send requests and interpret responses.
-- **Providers** are the actual AI services or endpoints that you're connecting to, such as OpenAI, Anthropic, or your own custom AI service.
+- **Providers** are the actual AI services or endpoints that you're connecting to, such as OpenAI, Anthropic, Ollama, or your own custom AI service.
 
 For example, the OpenAI driver in Prism can be used not just with OpenAI's services, but with any provider that implements an OpenAI-compatible API (like Ollama). Similarly, the Anthropic driver is specifically designed to work with Anthropic's API.
 
@@ -25,7 +25,7 @@ namespace App\Prism\Drivers;
 
 use EchoLabs\Prism\Contracts\Driver;
 use EchoLabs\Prism\Drivers\DriverResponse;
-use EchoLabs\Prism\Requests\GenerateTextRequest;
+use EchoLabs\Prism\Requests\TextRequest;
 
 class MyCustomDriver implements Driver
 {
@@ -37,7 +37,7 @@ class MyCustomDriver implements Driver
         return $this;
     }
 
-    public function generateText(GenerateTextRequest $request): DriverResponse
+    public function text(TextRequest $request): DriverResponse
     {
         // Implement the logic to send requests to your custom AI provider
         // and return a DriverResponse object
@@ -45,8 +45,8 @@ class MyCustomDriver implements Driver
 }
 ```
 
-3. In the `generateText` method, you'll need to:
-   - Convert the `GenerateTextRequest` into a format your provider understands
+3. In the `text` method, you'll need to:
+   - Convert the `TextRequest` into a format your provider understands
    - Send the request to your provider
    - Parse the response
    - Return a `DriverResponse` object with the results
@@ -68,7 +68,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->app->make(PrismManager::class)->extend('my-custom-driver', function ($app, $config) {
+        $this->app['prism-manager']->extend('my-custom-driver', function ($app, $config) {
             return new MyCustomDriver($config);
         });
     }

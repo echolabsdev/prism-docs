@@ -33,7 +33,7 @@ This will create a new file at `config/prism.php`. We'll explore how to configur
 
 Prism supports multiple AI providers. Depending on which one you're using, you'll need to add the appropriate API keys to your `.env` file. Here are examples for OpenAI and Anthropic:
 
-```env
+```shell
 OPENAI_API_KEY=your_openai_api_key_here
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```

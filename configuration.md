@@ -10,6 +10,18 @@ Prism uses a driver pattern to support multiple AI providers. This design makes 
 - Anthropic
 - Ollama (using the OpenAI driver)
 
+## Using Different Providers
+
+To use a specific provider in your application, you can do:
+
+```php
+Prism::text()
+  ->using('openai', 'gpt-4o') // [!code focus]
+  ->withPrompt('Hello, AI!');
+```
+
+Just change `'openai'` to `'anthropic'` or `'ollama'` to switch providers.
+
 ## Configuration File
 
 After installation, you'll find the Prism configuration file at `config/prism.php`. Let's break down its key sections:
@@ -101,17 +113,5 @@ OLLAMA_URL=http://localhost:11434/v1
 ```
 
 If you're running Ollama locally with default settings, you won't even need to change this.
-
-## Using Different Providers
-
-To use a specific provider in your application, you can do:
-
-```php
-Prism::text()
-  ->using('openai', 'gpt-4o') // [!code focus]
-  ->withPrompt('Hello, AI!');
-```
-
-Just change `'openai'` to `'anthropic'` or `'ollama'` to switch providers.
 
 That's it for the basic configuration! With Prism's flexible setup, you're now ready to start generating text using various AI providers, including Ollama, right out of the box.

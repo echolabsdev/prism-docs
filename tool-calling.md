@@ -40,7 +40,7 @@ $prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
     ->withPrompt("What's the weather like in Paris today? Should I bring a coat?")
     ->withTools([$weatherTool])
-    ->withMaxSteps(3); // Allow up to 3 steps for tool usage and response generation
+    ->withMaxSteps(3); // Allow up to 3 iterations for tool usage and response generation
 
 $response = $prism();
 ```
@@ -73,7 +73,7 @@ foreach ($response->steps as $step) {
 }
 ```
 
-This allows you to see not just the final answer, but also how the AI arrived at its conclusion, including which tools it used and why.
+This allows you to see not just the final answer, but also how the AI arrived at its conclusion, including which tools it used and why. You still have access to all of the [text result](/generating-text.html#accessing-generated-data) outputs.
 
 ## Best Practices for Tool Use
 
