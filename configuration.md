@@ -38,6 +38,7 @@ return [
             'driver' => 'openai',
             'url' => env('OPENAI_URL', 'https://api.openai.com/v1'),
             'api_key' => env('OPENAI_API_KEY'),
+            'organization' => env('OPENAI_ORGANIZATION', null),
         ],
         'anthropic' => [
             'driver' => 'anthropic',
@@ -67,6 +68,7 @@ The `providers` section is where you configure your AI service providers. Let's 
     'driver' => 'openai',
     'url' => env('OPENAI_URL', 'https://api.openai.com/v1'),
     'api_key' => env('OPENAI_API_KEY'),
+    'organization' => env('OPENAI_ORGANIZATION', null),
 ],
 ```
 
