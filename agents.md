@@ -30,13 +30,12 @@ $tools = [
 ];
 
 // Create the agent
-$prism = Prism::text()
+$response = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
     ->withPrompt("What time is the Tigers game today in Detroit and should I wear a coat?")
     ->withMaxSteps(10)
-    ->withTools($tools);
-
-$response = $prism();
+    ->withTools($tools)
+    ->generate();
 
 echo "ANSWER: " . $response->text;
 ```

@@ -8,11 +8,12 @@ To generate text with Prism, you'll use the `Prism` facade along with the `text(
 ```php
 <?php
 
-$prism = Prism::text()
-  ->using('anthropic', 'claude-3-sonnet')
-  ->withPrompt('Tell me a short story about a brave knight.');
+$response = Prism::text()
+  ->using(Provider::Anthropic, 'claude-3-sonnet')
+  ->withPrompt('Tell me a short story about a brave knight.')
+  ->generate();
 
-echo $prism()->text;
+echo $response->text;
 ```
 
 ### Different Providers and Models
@@ -24,17 +25,15 @@ Prism supports multiple AI providers and models. You can specify these in the `u
 
 // Using OpenAI
 $prism = Prism::text()
-    ->using('openai', 'gpt-4')
-    ->withPrompt('Explain quantum computing in simple terms.');
-
-$prism();
+    ->using(Provider::OpenAI, 'gpt-4')
+    ->withPrompt('Explain quantum computing in simple terms.')
+    ->generate();
 
 // Using Anthropic
 $prism = Prism::text()
-    ->using('anthropic', 'claude-3-opus')
-    ->withPrompt('Describe the process of photosynthesis.');
-
-$prism();
+    ->using(Provider::Anthropic, 'claude-3-opus')
+    ->withPrompt('Describe the process of photosynthesis.')
+    ->generate();
 ```
 
 ### withPrompt vs withMessages
@@ -49,10 +48,9 @@ Use `withPrompt()` for simple, single-turn interactions:
 <?php
 
 $prism = Prism::text()
-    ->using('anthropic', 'claude-3-sonnet')
-    ->withPrompt('What is the capital of France?');
-
-$prism();
+    ->using(Provider::Anthropic, 'claude-3-sonnet')
+    ->withPrompt('What is the capital of France?')
+    ->generate();
 ```
 
 #### Using withMessages()
@@ -66,14 +64,13 @@ use EchoLabs\Prism\ValueObjects\Messages\UserMessage;
 use EchoLabs\Prism\ValueObjects\Messages\AssistantMessage;
 
 $prism = Prism::text()
-    ->using('anthropic', 'claude-3-sonnet')
+    ->using(Provider::Anthropic, 'claude-3-sonnet')
     ->withMessages([
         new UserMessage('Hello, who are you?'),
         new AssistantMessage('I am an AI assistant created by Anthropic. How can I help you today?'),
         new UserMessage('Can you tell me about the weather in Paris?'),
-    ]);
-
-$prism();
+    ])
+    ->generate();
 ```
 
 ### When to Use withPrompt vs withMessages
@@ -97,13 +94,13 @@ Both `withPrompt()` and `withSystemPrompt()` can accept either a string or a Lar
 
 // Using a string
 Prism::text()
-  ->using('anthropic', 'claude-3-sonnet')
+  ->using(Provider::Anthropic, 'claude-3-sonnet')
   ->withSystemPrompt('You are a helpful assistant.')
   ->withPrompt('Tell me a joke about programming.');
 
 // Using a View
 Prism::text()
-  ->using('anthropic', 'claude-3-sonnet')
+  ->using(Provider::Anthropic, 'claude-3-sonnet')
   ->withSystemPrompt(view('prompts.assistant'))
   ->withPrompt(view('prompts.tell-joke', ['topic' => 'programming']));
 ```
@@ -118,13 +115,12 @@ Prism allows you to fine-tune your text generation with various configuration op
 <?php
 
 $prism = Prism::text()
-    ->using('anthropic', 'claude-3-sonnet')
+    ->using(Provider::Anthropic, 'claude-3-sonnet')
     ->withMaxTokens(500)
     ->usingTemperature(0.7)
     ->usingTopP(1)
-    ->withPrompt('Write a haiku about springtime.');
-
-$prism();
+    ->withPrompt('Write a haiku about springtime.')
+    ->generate();
 ```
 
 - `withMaxTokens()`: Sets the maximum number of tokens to generate.
@@ -138,11 +134,10 @@ The `TextResponse` object provides access to various aspects of the AI's respons
 ```php
 <?php
 
-$prism = Prism::text()
-    ->using('anthropic', 'claude-3-sonnet')
-    ->withPrompt('Tell me a joke about programming.');
-
-$response = $prism();
+$response = Prism::text()
+    ->using(Provider::Anthropic, 'claude-3-sonnet')
+    ->withPrompt('Tell me a joke about programming.')
+    ->generate();
 
 // Access the generated text
 // If using multi-step generation, this is the text from the final step

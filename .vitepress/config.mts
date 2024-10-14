@@ -38,7 +38,7 @@ export default defineConfig({
           { text: "Tool Calling", link: "/tool-calling" },
           { text: "Agents", link: "/agents" },
           { text: "Prism Server", link: "/prism-server" },
-          { text: "Custom Drivers", link: "/custom-drivers" },
+          { text: "Custom Providers", link: "/custom-providers" },
           { text: "Roadmap", link: "/roadmap" },
         ],
       },
