@@ -1,6 +1,6 @@
-# Tool Calling
+# Using Tools in Prism
 
-Ever wished your AI assistant could check the weather or look up real-time data? With Prism's tool calling feature, now it can! This powerful functionality allows your AI to interact with external services and data sources, making it more versatile and helpful than ever.
+Tools in Prism allow you to extend the capabilities of your AI assistant by defining specific functions it can call. This powerful functionality enables your AI to interact with external services and data sources, making it more versatile and helpful than ever.
 
 ## What are Tools?
 
@@ -18,8 +18,6 @@ Here's what makes up a tool in Prism:
 Let's create a simple weather tool to see how this works in practice:
 
 ```php
-<?php
-
 $weatherTool = Tool::as('weather')
     ->for('Get current weather conditions')
     ->withParameter('city', 'The city to get weather for')
@@ -29,13 +27,140 @@ $weatherTool = Tool::as('weather')
     });
 ```
 
-## Using Tools in Your Prism Requests
+## Defining Parameters
 
-Now that we have our weather tool, let's use it in a Prism request:
+Prism offers two main ways to define parameters for your tools: the fluent interface and the `withParameter` method.
+
+### Fluent Interface
+
+The fluent interface provides a readable way to chain parameter definitions:
 
 ```php
-<?php
+$tool = Tool::as('weather')
+    ->for('Get current weather conditions')
+    ->withStringParameter('city', 'The city to get weather for')
+    ->withNumberParameter('days', 'Number of days for forecast')
+    ->using(function (string $city, int $days) {
+        // Implementation
+    });
+```
 
+#### The Fluent Methods
+
+```php
+->withStringParameter('name', 'The name of the user', required: true)
+->withNumberParameter('age', 'The age of the user', required: true)
+->withBooleanParameter('isActive', 'Whether the user is active', required: true)
+->withArrayParameter('hobbies', 'List of user hobbies', new StringSchema('hobby', 'A hobby'), required: true)
+->withObjectParameter(
+    'address',
+    'User address',
+    [
+        new StringSchema('street', 'Street name'),
+        new StringSchema('city', 'City name'),
+        new StringSchema('country', 'Country name'),
+    ],
+    ['street', 'city'],
+    required: true
+)
+->withEnumParameter('role', 'User role', ['admin', 'user', 'guest'], required: true);
+```
+
+### Using `withParameter` Method
+
+For more control, you can use the `withParameter` method with schema objects:
+
+```php
+use EchoLabs\Prism\Schema\StringSchema;
+use EchoLabs\Prism\Schema\NumberSchema;
+
+$tool = Tool::as('weather')
+    ->for('Get current weather conditions')
+    ->withParameter(new StringSchema('city', 'The city to get weather for'))
+    ->withParameter(new NumberSchema('days', 'Number of days for forecast'))
+    ->using(function (string $city, int $days) {
+        // Implementation
+    });
+```
+
+## Defining Complex Schemas
+
+For more complex data structures, you can nest schemas. Here's an example of a complex schema:
+
+```php
+use EchoLabs\Prism\Schema\ArraySchema;
+use EchoLabs\Prism\Schema\ObjectSchema;
+use EchoLabs\Prism\Schema\StringSchema;
+
+$userSchema = new ObjectSchema(
+    name: 'user',
+    description: 'the user object',
+    properties: [
+        new StringSchema('name', 'the users name'),
+        new ArraySchema(
+            name: 'hobbies',
+            description: 'the users hobbies',
+            items: new ObjectSchema(
+                name: 'hobby',
+                description: 'the hobby object',
+                properties: [
+                    new StringSchema('name', 'the hobby name'),
+                    new StringSchema('description', 'the hobby description'),
+                ],
+                requiredFields: ['name', 'description']
+            )
+        ),
+    ],
+    requiredFields: ['name', 'hobbies']
+);
+
+$usersParameter = new ArraySchema(
+    name: 'users',
+    description: 'an array of users',
+    items: $userSchema
+);
+
+$tool = Tool::as('user_creator')
+    ->for('Creating users')
+    ->withParameter($usersParameter)
+    ->using(function (array $users) {
+        // Implementation
+    });
+```
+
+### Required Fields and Additional Properties
+
+When defining `ObjectSchema`, you can specify which fields are required and whether additional properties are allowed:
+
+```php
+$schema = new ObjectSchema(
+    name: 'config',
+    description: 'Configuration object',
+    properties: [
+        new StringSchema('apiKey', 'API key for the service'),
+        new NumberSchema('timeout', 'Timeout in seconds'),
+    ],
+    requiredFields: ['apiKey'],
+    allowAdditionalProperties: true
+);
+```
+
+In this example, `apiKey` is a required field, `timeout` is optional, and additional properties are allowed.
+
+
+::: info
+**Note:** All parameters are required by default. To make a parameter optional, explicitly set `required: false` when adding it to your tool:
+
+```php
+$tool->withParameter($schema, required: false)
+```
+:::
+
+## Using Tools in Your Prism Requests
+
+Now that we have our tool, let's use it in a Prism request:
+
+```php
 $prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
     ->withPrompt("What's the weather like in Paris today? Should I bring a coat?")
@@ -73,13 +198,13 @@ foreach ($response->steps as $step) {
 }
 ```
 
-This allows you to see not just the final answer, but also how the AI arrived at its conclusion, including which tools it used and why. You still have access to all of the [text result](/generating-text.html#accessing-generated-data) outputs.
+This allows you to see not just the final answer, but also how the AI arrived at its conclusion, including which tools it used and why.
 
 ## Defining Complex Tools
 
-Sometimes tools are more complex and it doesn't make sense to use a Closure. You can also define tools as callable classes. 
+Sometimes tools are more complex and it doesn't make sense to use a Closure. You can also define tools as callable classes.
 
-Here is an example of a simplistic search tool using the [SerpAPI](https://serpapi.com/).
+Here is an example of a simplistic search tool using the [SerpAPI](https://serpapi.com/):
 
 ```php
 <?php
@@ -150,7 +275,7 @@ ALWAYS CITE SOURCES AT THE END OF YOUR RESPONSE
 </example-sources>
 ```
 
-Then we just need to register to tool with a Prism.
+Then we just need to register the tool with a Prism instance:
 
 ```php
 <?php
@@ -159,9 +284,10 @@ $prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
     ->withPrompt("What's the weather like in Paris today?")
     ->withTools([new SearchTool])
-    ->withMaxSteps(3);
+    ->withMaxSteps(3)
+    ->generate();
 
-echo $prism()->text;
+echo $prism->text;
 ```
 
 ## Best Practices for Tool Use
