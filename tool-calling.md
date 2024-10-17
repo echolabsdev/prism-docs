@@ -83,6 +83,14 @@ $tool = Tool::as('weather')
     });
 ```
 
+::: info
+**Note:** All parameters are required by default. To make a parameter optional, explicitly set `required: false` when adding it to your tool:
+
+```php
+$tool->withParameter($schema, required: false)
+```
+:::
+
 ## Defining Complex Schemas
 
 For more complex data structures, you can nest schemas. Here's an example of a complex schema:
@@ -146,15 +154,6 @@ $schema = new ObjectSchema(
 ```
 
 In this example, `apiKey` is a required field, `timeout` is optional, and additional properties are allowed.
-
-
-::: info
-**Note:** All parameters are required by default. To make a parameter optional, explicitly set `required: false` when adding it to your tool:
-
-```php
-$tool->withParameter($schema, required: false)
-```
-:::
 
 ## Using Tools in Your Prism Requests
 
