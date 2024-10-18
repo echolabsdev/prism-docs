@@ -19,11 +19,11 @@ $response = Prism::text()
 echo $response->text;
 ```
 
-```php [OpenAI]
+```php [Mistral]
 <?php
 
 $response = Prism::text()
-    ->using(Provider::OpenAI, 'gpt-4')
+    ->using(Provider::Mistral, 'ministral-8b-latest')
     ->withSystemPrompt(view('prompts.nyx'))
     ->withPrompt('Explain quantum computing to a 5-year-old.')
     ->generate();
@@ -42,6 +42,18 @@ $response = Prism::text()
 
 echo $response->text;
 ```
+
+```php [OpenAI]
+<?php
+
+$response = Prism::text()
+    ->using(Provider::OpenAI, 'gpt-4')
+    ->withSystemPrompt(view('prompts.nyx'))
+    ->withPrompt('Explain quantum computing to a 5-year-old.')
+    ->generate();
+
+echo $response->text;
+```
 :::
 
 Prism draws significant inspiration from the [Vercel AI SDK](https://sdk.vercel.ai/docs/ai-sdk-core), adapting its powerful concepts and developer-friendly approach to the Laravel ecosystem.
@@ -54,3 +66,14 @@ Key features of Prism include:
 - Flexible configuration options to fine-tune your AI interactions
 
 Ready to supercharge your Laravel app with AI? Let's dive in and explore how Prism can transform your development process!
+
+## Providers
+
+We currently have first-party support for the following providers:
+
+- Anthropic
+- Mistral
+- Ollama
+- OpenAI
+
+To learn more about configuring this providers, check out the [configuration](/configuration) section.

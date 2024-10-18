@@ -30,15 +30,19 @@ return [
     'providers' => [
         'openai' => [
             'url' => env('OPENAI_URL', 'https://api.openai.com/v1'),
-            'api_key' => env('OPENAI_API_KEY'),
+            'api_key' => env('OPENAI_API_KEY', ''),
             'organization' => env('OPENAI_ORGANIZATION', null),
         ],
         'anthropic' => [
-            'api_key' => env('ANTHROPIC_API_KEY'),
+            'api_key' => env('ANTHROPIC_API_KEY', ''),
             'version' => env('ANTHROPIC_API_VERSION', '2023-06-01'),
         ],
         'ollama' => [
             'url' => env('OLLAMA_URL', 'http://localhost:11434/v1'),
+        ],
+        'mistral' => [
+            'api_key' => env('MISTRAL_API_KEY', ''),
+            'url' => env('MISTRAL_URL', 'https://api.mistral.ai/v1'),
         ],
     ],
 ];
@@ -64,7 +68,7 @@ The `providers` section is where you configure your AI service providers. Let's 
 
 This configuration uses the OpenAI provider. Set your API key in the `.env` file:
 
-```
+```shell
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
@@ -79,9 +83,24 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 For Anthropic, set your API key and optionally the API version in the `.env` file:
 
-```
+```shell
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ANTHROPIC_API_VERSION=2023-06-01
+```
+
+#### Mistral
+
+```php
+'mistral' => [
+    'api_key' => env('MISTRAL_API_KEY', ''),
+    'url' => env('MISTRAL_URL', 'https://api.mistral.ai/v1'),
+],
+```
+
+For Mistral, set your API key in the `.env` file:
+
+```shell
+MISTRAL_API_KEY=your_mistral_api_key_here
 ```
 
 #### Ollama
@@ -93,8 +112,7 @@ ANTHROPIC_API_VERSION=2023-06-01
 ```
 
 To use Ollama, just set the URL in your `.env` file:
-
-```
+```shell
 OLLAMA_URL=http://localhost:11434/v1
 ```
 
