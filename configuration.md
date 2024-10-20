@@ -118,4 +118,19 @@ OLLAMA_URL=http://localhost:11434/v1
 
 If you're running Ollama locally with default settings, you won't even need to change this.
 
+## Provider Configuration
+### Client Configuration
+
+If you need to pass additional HTTP client configurations to the provider you can use the `->withClientOptions()` method. This method accepts [Guzzle's request options](https://docs.guzzlephp.org/en/stable/request-options.html).
+
+```php
+<?php
+
+Prism::text()
+  ->using(Provider::Ollama, 'qwen2.5')
+  ->withClientOptions(['timeout' => '20'])
+  ->withPrompt('Who are you?')
+  ->generate();
+```
+
 That's it for the basic configuration! With Prism's flexible setup, you're now ready to start generating text using various AI providers, including Ollama, right out of the box.
