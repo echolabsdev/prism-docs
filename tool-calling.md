@@ -161,7 +161,7 @@ Now that we have our tool, let's use it in a Prism request:
 
 ```php
 $prism = Prism::text()
-    ->using('anthropic', 'claude-3-sonnet')
+    ->using('anthropic', 'claude-3-5-sonnet-latest')
     ->withPrompt("What's the weather like in Paris today? Should I bring a coat?")
     ->withTools([$weatherTool])
     ->withMaxSteps(3); // Allow up to 3 iterations for tool usage and response generation
@@ -280,7 +280,7 @@ Then we just need to register the tool with a Prism instance:
 <?php
 
 $prism = Prism::text()
-    ->using('anthropic', 'claude-3-sonnet')
+    ->using('anthropic', 'claude-3-5-sonnet-latest')
     ->withPrompt("What's the weather like in Paris today?")
     ->withTools([new SearchTool])
     ->withMaxSteps(3)
