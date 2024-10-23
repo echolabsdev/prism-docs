@@ -18,6 +18,8 @@ Here's what makes up a tool in Prism:
 Let's create a simple weather tool to see how this works in practice:
 
 ```php
+use EchoLabs\Prism\Facades\Tool;
+
 $weatherTool = Tool::as('weather')
     ->for('Get current weather conditions')
     ->withParameter('city', 'The city to get weather for')
