@@ -11,7 +11,7 @@ Here's a quick example of how you can generate text using Prism:
 <?php
 
 $response = Prism::text()
-    ->using(Provider::Anthropic, 'claude-3-5-sonnet-20240620')
+    ->using(Provider::Anthropic, 'claude-3-5-sonnet-latest')
     ->withSystemPrompt(view('prompts.nyx'))
     ->withPrompt('Explain quantum computing to a 5-year-old.')
     ->generate();
@@ -67,13 +67,14 @@ Key features of Prism include:
 
 Ready to supercharge your Laravel app with AI? Let's dive in and explore how Prism can transform your development process!
 
-## Providers
+## Supported Providers
 
 We currently have first-party support for the following providers:
 
-- Anthropic
-- Mistral
-- Ollama
-- OpenAI
+- [Anthropic](https://anthropic.com)
+- [Groq](https://groq.com)
+- [Mistral](https://mistral.ai)
+- [Ollama](https://ollama.com)
+- [OpenAI](https://openai.com)
 
 To learn more about configuring this providers, check out the [configuration](/configuration) section.
