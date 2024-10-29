@@ -62,6 +62,7 @@ For multi-turn conversations or chat-like interactions, use `withMessages()`:
 
 use EchoLabs\Prism\ValueObjects\Messages\UserMessage;
 use EchoLabs\Prism\ValueObjects\Messages\AssistantMessage;
+use EchoLabs\Prism\ValueObjects\Messages\Support\Image;
 
 $prism = Prism::text()
     ->using(Provider::Anthropic, 'claude-3-sonnet')
@@ -70,6 +71,67 @@ $prism = Prism::text()
         new AssistantMessage('I am an AI assistant created by Anthropic. How can I help you today?'),
         new UserMessage('Can you tell me about the weather in Paris?'),
     ])
+    ->generate();
+```
+
+### Working with Images
+
+Prism supports sending images alongside text in your messages. You can include images when using `withMessages()` by utilizing the `Image` class. There are several ways to include images:
+
+#### From a File Path
+
+```php
+<?php
+
+use EchoLabs\Prism\ValueObjects\Messages\Support\Image;
+use EchoLabs\Prism\ValueObjects\Messages\UserMessage;
+
+$message = new UserMessage(
+    'What can you tell me about this image?',
+    [Image::fromPath('/path/to/your/image.jpg')]
+);
+```
+
+#### From a URL
+
+```php
+<?php
+
+$message = new UserMessage(
+    'Describe this image:',
+    [Image::fromUrl('https://example.com/image.jpg')]
+);
+```
+
+#### From Base64 Encoded Data
+
+```php
+<?php
+
+$message = new UserMessage(
+    'Analyze this image:',
+    [Image::fromBase64('base64_encoded_image_data', 'image/jpeg')]
+);
+```
+
+#### Multiple Images in One Message
+
+You can include multiple images in a single message:
+
+```php
+<?php
+
+$message = new UserMessage(
+    'Compare these images:',
+    [
+        Image::fromPath('/path/to/first-image.jpg'),
+        Image::fromPath('/path/to/second-image.jpg')
+    ]
+);
+
+$prism = Prism::text()
+    ->using(Provider::Anthropic, 'claude-3-sonnet')
+    ->withMessages([$message])
     ->generate();
 ```
 
@@ -84,6 +146,7 @@ $prism = Prism::text()
   - You're building a conversational AI or chatbot
   - You need to provide context from previous messages
   - You want to simulate a back-and-forth dialogue
+  - You need to include images in your messages
 
 ### Using Strings or Views
 
@@ -183,4 +246,4 @@ foreach ($response->responseMessages as $message) {
 
 The `TextResponse` object allows you to examine the details of the AI's response, including token usage, individual steps in multi-step interactions, and the content of response messages.
 
-By leveraging these features, you can create sophisticated AI-powered applications that generate text, engage in conversations, and provide valuable insights based on user input.
+By leveraging these features, you can create sophisticated AI-powered applications that generate text, engage in conversations, and provide valuable insights based on user input and images.
