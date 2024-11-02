@@ -18,6 +18,8 @@ Here's what makes up a tool in Prism:
 Let's create a simple weather tool to see how this works in practice:
 
 ```php
+<?php
+
 use EchoLabs\Prism\Facades\Tool;
 
 $weatherTool = Tool::as('weather')
@@ -38,6 +40,8 @@ Prism offers two main ways to define parameters for your tools: the fluent inter
 The fluent interface provides a readable way to chain parameter definitions:
 
 ```php
+<?php
+
 $tool = Tool::as('weather')
     ->for('Get current weather conditions')
     ->withStringParameter('city', 'The city to get weather for')
@@ -50,6 +54,8 @@ $tool = Tool::as('weather')
 #### The Fluent Methods
 
 ```php
+<?php
+
 ->withStringParameter('name', 'The name of the user', required: true)
 ->withNumberParameter('age', 'The age of the user', required: true)
 ->withBooleanParameter('isActive', 'Whether the user is active', required: true)
@@ -73,6 +79,8 @@ $tool = Tool::as('weather')
 For more control, you can use the `withParameter` method with schema objects:
 
 ```php
+<?php
+
 use EchoLabs\Prism\Schema\StringSchema;
 use EchoLabs\Prism\Schema\NumberSchema;
 
@@ -89,6 +97,8 @@ $tool = Tool::as('weather')
 **Note:** All parameters are required by default. To make a parameter optional, explicitly set `required: false` when adding it to your tool:
 
 ```php
+<?php
+
 $tool->withParameter($schema, required: false)
 ```
 :::
@@ -98,6 +108,8 @@ $tool->withParameter($schema, required: false)
 For more complex data structures, you can nest schemas. Here's an example of a complex schema:
 
 ```php
+<?php
+
 use EchoLabs\Prism\Schema\ArraySchema;
 use EchoLabs\Prism\Schema\ObjectSchema;
 use EchoLabs\Prism\Schema\StringSchema;
@@ -143,6 +155,8 @@ $tool = Tool::as('user_creator')
 When defining `ObjectSchema`, you can specify which fields are required and whether additional properties are allowed:
 
 ```php
+<?php
+
 $schema = new ObjectSchema(
     name: 'config',
     description: 'Configuration object',
@@ -162,6 +176,8 @@ In this example, `apiKey` is a required field, `timeout` is optional, and additi
 Now that we have our tool, let's use it in a Prism request:
 
 ```php
+<?php
+
 $prism = Prism::text()
     ->using('anthropic', 'claude-3-5-sonnet-latest')
     ->withPrompt("What's the weather like in Paris today? Should I bring a coat?")
@@ -186,6 +202,8 @@ Sometimes, the AI needs to use multiple tools or use a tool and then process its
 After making a tool-enabled request, you can inspect the results:
 
 ```php
+<?php
+
 echo $response->text; // The AI's final answer
 
 foreach ($response->steps as $step) {
@@ -289,6 +307,34 @@ $prism = Prism::text()
     ->generate();
 
 echo $prism->text;
+```
+
+## Tool Choice
+
+There are several ways you can enforce tool calls depending on the underlying LLM provider.
+
+> [!WARNING]
+> Not all providers support tool choice or specific tool choice options. Please check provider specific documentation.
+
+```php
+<?php
+
+$tool = Tool::as('weather')
+    ->for('Get current weather conditions')
+    ->withParameter(new StringSchema('city', 'The city to get weather for'))
+    ->withParameter(new NumberSchema('days', 'Number of days for forecast'))
+    ->using(function (string $city, int $days) {
+        // Implementation
+    });
+
+$prism = Prism::text()
+    // Enforce calling a tool but the LLM can choose which tool to use
+    ->toolChoice(ToolChoice::Any)
+    // Allow the LLM to decide if it should call a tool and what tool to call
+    ->toolChoice(ToolChoice::Auto)
+    // The LLM must call the specified tool
+    ->toolChoice('weather')
+    ->toolChoice($tool)
 ```
 
 ## Best Practices for Tool Use
