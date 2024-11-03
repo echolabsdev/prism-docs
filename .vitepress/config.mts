@@ -19,7 +19,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
-      { text: "Docs", link: "/introduction" },
+      { text: "Docs", link: "/getting-started/introduction" },
       { text: "Sponsor", link: "https://github.com/sponsors/sixlive" },
     ],
 
@@ -29,17 +29,92 @@ export default defineConfig({
           {
             text: "Getting Started",
             items: [
-              { text: "Introduction", link: "/introduction" },
-              { text: "Installation", link: "/installation" },
-              { text: "Configuration", link: "/configuration" },
+              {
+                text: "Introduction",
+                link: "/getting-started/introduction",
+              },
+              {
+                text: "Installation",
+                link: "/getting-started/installation",
+              },
+              {
+                text: "Configuration",
+                link: "/getting-started/configuration",
+              },
             ],
           },
-          { text: "Generating Text", link: "/generating-text" },
-          { text: "Tool Calling", link: "/tool-calling" },
-          { text: "Agents", link: "/agents" },
-          { text: "Prism Server", link: "/prism-server" },
-          { text: "Custom Providers", link: "/custom-providers" },
-          { text: "Roadmap", link: "/roadmap" },
+          {
+            text: "Core Concepts",
+            items: [
+              {
+                text: "Text Generation",
+                link: "/core-concepts/text-generation",
+              },
+              {
+                text: "Tool & Function Calling",
+                link: "/core-concepts/tools-function-calling",
+              },
+              {
+                text: "Prism Server",
+                link: "/core-concepts/prism-server",
+              },
+            ],
+          },
+          {
+            text: "Providers",
+            items: [
+              {
+                text: "Anthropic",
+                link: "/providers/anthropic",
+              },
+              {
+                text: "Groq",
+                link: "/providers/groq",
+              },
+              {
+                text: "Mistral",
+                link: "/providers/mistral",
+              },
+              {
+                text: "Ollama",
+                link: "/providers/ollama",
+              },
+              {
+                text: "OpenAI",
+                link: "/providers/openai",
+              },
+            ],
+          },
+          {
+            text: "Advanced",
+            items: [
+              {
+                text: "Error Handling",
+                link: "/advanced/error-handling",
+              },
+              {
+                text: "Testing",
+                link: "/advanced/testing",
+              },
+              {
+                text: "Custom Providers",
+                link: "/advanced/custom-providers",
+              },
+            ],
+          },
+          {
+            text: "Project Info",
+            items: [
+              {
+                text: "Roadmap",
+                link: "/project-info/roadmap",
+              },
+              {
+                text: "Contributing",
+                link: "/project-info/contributing",
+              },
+            ],
+          },
         ],
       },
     ],

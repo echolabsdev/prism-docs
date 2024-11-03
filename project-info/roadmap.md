@@ -1,4 +1,4 @@
-# Prism Roadmap
+# Roadmap
 
 Prism is constantly evolving to meet the needs of developers working with Large Language Models. Here's a glimpse into our development plans, categorized into short-term, mid-term, and long-term goals.
 
