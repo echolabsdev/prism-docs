@@ -89,14 +89,6 @@ export default defineConfig({
             text: "Advanced",
             items: [
               {
-                text: "Error Handling",
-                link: "/advanced/error-handling",
-              },
-              {
-                text: "Testing",
-                link: "/advanced/testing",
-              },
-              {
                 text: "Custom Providers",
                 link: "/advanced/custom-providers",
               },
