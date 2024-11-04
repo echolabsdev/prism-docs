@@ -8,8 +8,6 @@ Here's a quick example of how you can generate text using Prism:
 
 ::: code-group
 ```php [Anthropic]
-<?php
-
 $response = Prism::text()
     ->using(Provider::Anthropic, 'claude-3-sonnet')
     ->withSystemPrompt(view('prompts.system'))
@@ -20,8 +18,6 @@ echo $response->text;
 ```
 
 ```php [Mistral]
-<?php
-
 $response = Prism::text()
     ->using(Provider::Mistral, 'mistral-medium')
     ->withSystemPrompt(view('prompts.system'))
@@ -32,8 +28,6 @@ echo $response->text;
 ```
 
 ```php [Ollama]
-<?php
-
 $response = Prism::text()
     ->using(Provider::Ollama, 'llama2')
     ->withSystemPrompt(view('prompts.system'))
@@ -44,8 +38,6 @@ echo $response->text;
 ```
 
 ```php [OpenAI]
-<?php
-
 $response = Prism::text()
     ->using(Provider::OpenAI, 'gpt-4')
     ->withSystemPrompt(view('prompts.system'))
@@ -78,4 +70,4 @@ We currently offer first-party support for these leading AI providers:
 - [Ollama](https://ollama.com) - Run open-source models locally for complete control
 - [OpenAI](https://openai.com) - Integrate with GPT-4 and other powerful models
 
-Each provider brings its own strengths to the table, and Prism makes it easy to use them all through a consistent, elegant interface. 
+Each provider brings its own strengths to the table, and Prism makes it easy to use them all through a consistent, elegant interface.

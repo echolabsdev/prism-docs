@@ -13,8 +13,6 @@ php artisan vendor:publish --tag=prism-config
 Let's break down the key sections of this configuration file:
 
 ```php
-<?php
-
 return [
     'prism_server' => [
         'enabled' => env('PRISM_SERVER_ENABLED', true),

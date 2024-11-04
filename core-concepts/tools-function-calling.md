@@ -37,8 +37,6 @@ $searchTool = Tool::as('search')
 Prism offers multiple ways to define tool parameters, from simple strings to complex objects. Here's how you can define different parameter types:
 
 ```php
-<?php
-
 $tool = Tool::as('user_manager')
     ->for('Manage user data')
     ->withStringParameter('name', 'User name')
@@ -53,8 +51,6 @@ $tool = Tool::as('user_manager')
 For more complex scenarios, you can use schema objects:
 
 ```php
-<?php
-
 use EchoLabs\Prism\Schema\ArraySchema;
 use EchoLabs\Prism\Schema\ObjectSchema;
 use EchoLabs\Prism\Schema\StringSchema;
