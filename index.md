@@ -9,10 +9,10 @@ hero:
   actions:
     - theme: brand
       text: Docs
-      link: /introduction
+      link: /getting-started/introduction
     - theme: alt
       text: Roadmap
-      link: /roadmap
+      link: /project-info/roadmap
     - theme: alt
       text: Github
       link: https://github.com/echolabsdev/prism
