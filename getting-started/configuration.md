@@ -58,7 +58,7 @@ Prism follows Laravel's environment configuration best practices. All sensitive 
 
 For example:
 
-```env
+```shell
 # Prism Server Configuration
 PRISM_SERVER_ENABLED=true
 
