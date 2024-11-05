@@ -29,7 +29,7 @@ Prism uses a straightforward provider configuration system that lets you set up 
 
 - API credentials
 - Base URLs (useful for self-hosted instances or custom endpoints)
-- Provider-specific settings
+- Other Provider-specific settings
 
 Here's a general template for how providers are configured:
 

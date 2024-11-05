@@ -1,6 +1,6 @@
 # Installation
 
-Getting started with Prism is a breeze. Follow these simple steps to add Prism to your Laravel project and unlock the power of AI-driven text generation.
+Getting started with Prism is a breeze.
 
 ## Requirements
 

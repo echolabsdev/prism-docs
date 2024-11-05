@@ -20,7 +20,7 @@ echo $response->text;
 
 ## System Prompts and Context
 
-System prompts help set the behavior and context for the AI. They're particularly useful for maintaining consistent responses:
+System prompts help set the behavior and context for the AI. They're particularly useful for maintaining consistent responses or giving the LLM a persona:
 
 ```php
 $response = Prism::text()
@@ -40,6 +40,8 @@ $response = Prism::text()
     ->generate();
 ```
 
+You an also pass a View to the `withPrompt` method.
+
 ## Message Chains and Conversations
 
 For interactive conversations, use message chains to maintain context:
@@ -57,6 +59,16 @@ $response = Prism::text()
     ])
     ->generate();
 ```
+
+### Message Types
+
+- `SystemMessage`
+- `UserMessage`
+- `AssistantMessage`
+- `ToolResultMessage`
+
+> [!NOTE]
+> Some providers, like Anthropic, do not support the `SystemMessage` type. In those cases we convert `SystemMessage` to `UserMessage`.
 
 ## Multi-modal Capabilities (Images)
 
@@ -77,6 +89,14 @@ $message = new UserMessage(
     [Image::fromUrl('https://example.com/diagram.png')]
 );
 
+// From a Base64
+$image = base64_encode(file_get_contents('/path/to/image.jpg'));
+
+$message = new UserMessage(
+    'Analyze this diagram:',
+    [Image::fromBase64($image)]
+);
+
 $response = Prism::text()
     ->using(Provider::Anthropic, 'claude-3-sonnet')
     ->withMessages([$message])
@@ -87,15 +107,26 @@ $response = Prism::text()
 
 Fine-tune your generations with various parameters:
 
-```php
-$response = Prism::text()
-    ->using(Provider::Anthropic, 'claude-3-sonnet')
-    ->withMaxTokens(500)        // Limit response length
-    ->usingTemperature(0.7)     // Control randomness (0.0-1.0)
-    ->usingTopP(0.9)            // Control diversity
-    ->withPrompt('Write a story about space exploration.')
-    ->generate();
-```
+`withMaxTokens`
+
+Maximum number of tokens to generate.
+
+`withTemperature`
+
+Temperature setting.
+
+The value is passed through to the provider. The range depends on the provider and model. For most providers, 0 means almost deterministic results, and higher values mean more randomness.
+
+It is recommended to set either temperature or topP, but not both.
+
+`withTopP`
+
+Nucleus sampling.
+
+The value is passed through to the provider. The range depends on the provider and model. For most providers, nucleus sampling is a number between 0 and 1. E.g. 0.1 would mean that only tokens with the top 10% probability mass are considered.
+
+> [!TIP]
+> It is recommended to set either temperature or topP, but not both.
 
 ## Response Handling
 
@@ -131,10 +162,25 @@ foreach ($response->responseMessages as $message) {
 }
 ```
 
+### Finish Reasons
+
+```php
+case Stop;
+case Length;
+case ContentFilter;
+case ToolCalls;
+case Error;
+case Other;
+case Unknown;
+```
+
+## Error Handling
+
 Remember to handle potential errors in your generations:
 
 ```php
 use EchoLabs\Prism\Exceptions\PrismException;
+use Throwable;
 
 try {
     $response = Prism::text()
@@ -143,5 +189,7 @@ try {
         ->generate();
 } catch (PrismException $e) {
     Log::error('Text generation failed:', ['error' => $e->getMessage()]);
+} catch (Throwable $e) {
+    Log::error('Generic error:', ['error' => $e->getMessage]);
 }
 ```

@@ -53,12 +53,8 @@ Prism draws significant inspiration from the [Vercel AI SDK](https://sdk.vercel.
 ## Key Features
 
 - **Unified Provider Interface**: Switch seamlessly between AI providers like OpenAI, Anthropic, and Ollama without changing your application code.
-- **Laravel Integration**: Works naturally with Laravel's ecosystem, including views for prompts, facades for elegant syntax, and configuration management.
 - **Tool System**: Extend AI capabilities by defining custom tools that can interact with your application's business logic.
-- **Conversation Management**: Handle complex multi-turn conversations with ease using Prism's message management system.
 - **Image Support**: Work with multi-modal models that can process both text and images.
-- **Streaming Support**: Stream AI responses in real-time for better user experiences.
-- **Type Safety**: Enjoy strong typing and IDE support throughout the package.
 
 ## Supported Providers
 
@@ -70,4 +66,4 @@ We currently offer first-party support for these leading AI providers:
 - [Ollama](https://ollama.com) - Run open-source models locally for complete control
 - [OpenAI](https://openai.com) - Integrate with GPT-4 and other powerful models
 
-Each provider brings its own strengths to the table, and Prism makes it easy to use them all through a consistent, elegant interface.
+Each provider brings its own strengths to the table, and Prism makes it easy to use them all through a consistent, elegajnt interface.
