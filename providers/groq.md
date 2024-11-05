@@ -1,9 +1,9 @@
 # Groq
 ## Configuration
-  ### API keys
-  ### Base URLs
-  ### Provider-specific settings
-## Special features
-  ### Provider-specific capabilities
-  ### Model-specific options
-  ### Limitations
+
+```php
+'groq' => [
+    'api_key' => env('GROQ_API_KEY', ''),
+    'url' => env('GROQ_URL', 'https://api.groq.com/openai/v1'),
+],
+```

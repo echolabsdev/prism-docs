@@ -9,19 +9,22 @@
 ]
 ```
 
-## Special features
+## Provider-specific options
 ### Strict Tool Schemas
 
+Prism supports OpenAI's [function calling with Structured Outputs](https://platform.openai.com/docs/guides/function-calling#function-calling-with-structured-outputs) via provider-specific meta.
+
 ```php
-Tool::as('search')
+Tool::as('search') // [!code focus]
     ->for('Searching the web')
     ->withStringParameter('query', 'the detailed search query')
     ->using(fn (): string => '[Search results]')
-    ->withProviderMeta(Provider::OpenAI, [ // [!code ++]
-      'strict' => true, // [!code ++]
-    ]); // [!code ++]
+    ->withProviderMeta(Provider::OpenAI, [ // [!code focus]
+      'strict' => true, // [!code focus]
+    ]); // [!code focus]
 ```
 
 ## Limitations
+### Tool Choice
 
-- Does not support `ToolChoice::Any` when using `withToolChoice()`
+OpenAI does not support `ToolChoice::Any` when using `withToolChoice()`.

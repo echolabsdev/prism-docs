@@ -1,10 +1,9 @@
-# Mistral 
+# Mistral
 ## Configuration
-  ### API keys
-  ### Base URLs
-  ### Provider-specific settings
-## Special features
-  ### Provider-specific capabilities
-  ### Model-specific options
-  ### Limitations
 
+```php
+'mistral' => [
+    'api_key' => env('MISTRAL_API_KEY', ''),
+    'url' => env('MISTRAL_URL', 'https://api.mistral.ai/v1'),
+],
+```
