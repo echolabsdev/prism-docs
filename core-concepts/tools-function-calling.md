@@ -10,7 +10,7 @@ Think of tools as special functions that your AI assistant can use when it needs
 $weatherTool = Tool::as('weather')
     ->for('Get current weather conditions')
     ->withParameter('city', 'The city to get weather for')
-    ->using(function (string $city) {
+    ->using(function (string $city): string {
         // Your weather API logic here
         return "The weather in {$city} is sunny and 72°F.";
     });
@@ -26,7 +26,7 @@ use EchoLabs\Prism\Facades\Tool;
 $searchTool = Tool::as('search')
     ->for('Search for current information')
     ->withParameter('query', 'The search query')
-    ->using(function (string $query) {
+    ->using(function (string $query): string {
         // Your search implementation
         return "Search results for: {$query}";
     });
@@ -43,7 +43,7 @@ $tool = Tool::as('user_manager')
     ->withNumberParameter('age', 'User age')
     ->withBooleanParameter('active', 'Account status')
     ->withArrayParameter('hobbies', 'User hobbies', new StringSchema('hobby', 'A hobby'))
-    ->using(function (string $name, int $age, bool $active, array $hobbies) {
+    ->using(function (string $name, int $age, bool $active, array $hobbies): string {
         // Implementation
     });
 ```
@@ -83,21 +83,46 @@ $userSchema = new ObjectSchema(
 For more sophisticated tools, you can create dedicated classes:
 
 ```php
+namespace App\Tools;
+
+use EchoLabs\Prism\Tool;
+use Illuminate\Support\Facades\Http;
+
 class SearchTool extends Tool
 {
     public function __construct()
     {
         $this
             ->as('search')
-            ->for('Search for current information')
-            ->withParameter('query', 'Detailed search query')
+            ->for('useful when you need to search for current events')
+            ->withStringParameter('query', 'Detailed search query. Best to search one topic at a time.')
             ->using($this);
     }
 
     public function __invoke(string $query): string
     {
-        // Your complex search implementation
-        return $this->performSearch($query);
+        $response = Http::get('https://serpapi.com/search', [
+            'engine' => 'google',
+            'q' => $query,
+            'google_domain' => 'google.com',
+            'gl' => 'us',
+            'hl' => 'en',
+            'api_key' => config('services.serpapi.api_key'),
+        ]);
+
+        $results = collect($response->json('organic_results'));
+
+        $results->map(function ($result) {
+            return [
+                'title' => $result['title'],
+                'link' => $result['link'],
+                'snippet' => $result['snippet'],
+            ];
+        })->take(4);
+
+        return view('prompts.search-tool-results', [
+            'results' => $results,
+        ])->render();
     }
 }
 ```
@@ -105,8 +130,8 @@ class SearchTool extends Tool
 ## Tool Choice Options
 
 You can control how the AI uses tools with the `toolChoice` method:
-
 ```php
+
 $prism = Prism::text()
     ->using('anthropic', 'claude-3-sonnet')
     ->withPrompt('How is the weather in Paris?')
@@ -144,5 +169,5 @@ foreach ($response->steps as $step) {
             echo "Arguments: " . json_encode($toolCall->arguments()) . "\n";
         }
     }
-```
 }
+```
