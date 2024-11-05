@@ -128,6 +128,10 @@ The value is passed through to the provider. The range depends on the provider a
 > [!TIP]
 > It is recommended to set either temperature or topP, but not both.
 
+`withClientOptions`
+
+Under the hood we use Laravel's [HTTP client](https://laravel.com/docs/11.x/http-client#main-content). You can use this method to pass any of Guzzles [request options](https://docs.guzzlephp.org/en/stable/request-options.html) e.g. `->withCLientOptions(['timeout' => 30])`.
+
 ## Response Handling
 
 The response object provides rich access to the generation results:

@@ -13,4 +13,4 @@
 ## Model-specific options
 ## Limitations
 
-- Does not support `SystemMessage` when using [message chains and coversations](/core-concepts/text-generation.html#message-chains-and-conversations).
+- Does not support the `SystemMessage` message type, we automatically convert `SystemMessage` to `UserMessage`.
