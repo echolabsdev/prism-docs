@@ -8,11 +8,9 @@ Here's a quick example of how you can generate text using Prism:
 
 ::: code-group
 ```php [Anthropic]
-<?php
-
 $response = Prism::text()
-    ->using(Provider::Anthropic, 'claude-3-5-sonnet-latest')
-    ->withSystemPrompt(view('prompts.nyx'))
+    ->using(Provider::Anthropic, 'claude-3-sonnet')
+    ->withSystemPrompt(view('prompts.system'))
     ->withPrompt('Explain quantum computing to a 5-year-old.')
     ->generate();
 
@@ -20,11 +18,9 @@ echo $response->text;
 ```
 
 ```php [Mistral]
-<?php
-
 $response = Prism::text()
-    ->using(Provider::Mistral, 'ministral-8b-latest')
-    ->withSystemPrompt(view('prompts.nyx'))
+    ->using(Provider::Mistral, 'mistral-medium')
+    ->withSystemPrompt(view('prompts.system'))
     ->withPrompt('Explain quantum computing to a 5-year-old.')
     ->generate();
 
@@ -32,11 +28,9 @@ echo $response->text;
 ```
 
 ```php [Ollama]
-<?php
-
 $response = Prism::text()
-    ->using(Provider::Ollama, 'qwen2.5:14b')
-    ->withSystemPrompt(view('prompts.nyx'))
+    ->using(Provider::Ollama, 'llama2')
+    ->withSystemPrompt(view('prompts.system'))
     ->withPrompt('Explain quantum computing to a 5-year-old.')
     ->generate();
 
@@ -44,11 +38,9 @@ echo $response->text;
 ```
 
 ```php [OpenAI]
-<?php
-
 $response = Prism::text()
     ->using(Provider::OpenAI, 'gpt-4')
-    ->withSystemPrompt(view('prompts.nyx'))
+    ->withSystemPrompt(view('prompts.system'))
     ->withPrompt('Explain quantum computing to a 5-year-old.')
     ->generate();
 
@@ -58,23 +50,20 @@ echo $response->text;
 
 Prism draws significant inspiration from the [Vercel AI SDK](https://sdk.vercel.ai/docs/ai-sdk-core), adapting its powerful concepts and developer-friendly approach to the Laravel ecosystem.
 
-Key features of Prism include:
+## Key Features
 
-- Unified interface for multiple AI providers
-- Seamless integration with Laravel's ecosystem
-- Built-in support for AI-powered tools and function calling
-- Flexible configuration options to fine-tune your AI interactions
-
-Ready to supercharge your Laravel app with AI? Let's dive in and explore how Prism can transform your development process!
+- **Unified Provider Interface**: Switch seamlessly between AI providers like OpenAI, Anthropic, and Ollama without changing your application code.
+- **Tool System**: Extend AI capabilities by defining custom tools that can interact with your application's business logic.
+- **Image Support**: Work with multi-modal models that can process both text and images.
 
 ## Supported Providers
 
-We currently have first-party support for the following providers:
+We currently offer first-party support for these leading AI providers:
 
-- [Anthropic](https://anthropic.com)
-- [Groq](https://groq.com)
-- [Mistral](https://mistral.ai)
-- [Ollama](https://ollama.com)
-- [OpenAI](https://openai.com)
+- [Anthropic](https://anthropic.com) - Access Claude models for sophisticated reasoning and tool use
+- [Groq](https://groq.com) - Leverage high-performance inference for rapid response times
+- [Mistral](https://mistral.ai) - Use cutting-edge open models with commercial licensing
+- [Ollama](https://ollama.com) - Run open-source models locally for complete control
+- [OpenAI](https://openai.com) - Integrate with GPT-4 and other powerful models
 
-To learn more about configuring this providers, check out the [configuration](/configuration) section.
+Each provider brings its own strengths to the table, and Prism makes it easy to use them all through a consistent, elegajnt interface.

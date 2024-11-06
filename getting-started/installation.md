@@ -1,6 +1,6 @@
 # Installation
 
-Getting started with Prism is a breeze. Follow these simple steps to add Prism to your Laravel project and unlock the power of AI-driven text generation.
+Getting started with Prism is a breeze.
 
 ## Requirements
 
@@ -32,16 +32,3 @@ php artisan vendor:publish --tag=prism-config
 ```
 
 This will create a new file at `config/prism.php`. We'll explore how to configure Prism in the next section.
-
-## Step 3: Set Up Your Environment
-
-Prism supports multiple AI providers. Depending on which one you're using, you'll need to add the appropriate API keys to your `.env` file. Here are examples for OpenAI and Anthropic:
-
-```shell
-OPENAI_API_KEY=your_openai_api_key_here
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
-```
-
-## That's it!
-
-You've successfully installed Prism in your Laravel project. You're now ready to start generating text, using tools, and creating AI-powered applications with ease.
