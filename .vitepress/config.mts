@@ -12,6 +12,49 @@ export default defineConfig({
         "data-website-id": "38989bda-90b5-47af-81ab-57a823480b9e",
       },
     ],
+    // OpenGraph / Facebook
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:url", content: "https://prism.echolabs.dev" }],
+    ["meta", { property: "og:title", content: "Prism" }],
+    [
+      "meta",
+      {
+        property: "og:description",
+        content:
+          "Prism is a powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
+      },
+    ],
+    [
+      "meta",
+      {
+        property: "og:image",
+        content: "/assets/og-image.png",
+      },
+    ],
+
+    // Twitter
+    ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    ["meta", { property: "twitter:domain", content: "prism.echolabs.dev" }],
+    [
+      "meta",
+      { property: "twitter:url", content: "https://prism.echolabs.dev" },
+    ],
+    ["meta", { name: "twitter:title", content: "Prism" }],
+    [
+      "meta",
+      {
+        name: "twitter:description",
+        content:
+          "Prism is a powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
+      },
+    ],
+    [
+      "meta",
+      {
+        name: "twitter:image",
+        content: "/assets/og-image.png",
+      },
+    ],
   ],
   description:
     "Prism is a powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
@@ -100,10 +143,6 @@ export default defineConfig({
               {
                 text: "Roadmap",
                 link: "/project-info/roadmap",
-              },
-              {
-                text: "Contributing",
-                link: "/project-info/contributing",
               },
             ],
           },
