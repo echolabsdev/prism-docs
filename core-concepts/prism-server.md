@@ -1,34 +1,31 @@
 # Prism Server
 
-Prism Server lets you expose your custom AI models through a standardized OpenAI-compatible API interface. This means you can use any OpenAI-compatible client or tool while leveraging your own Prism-powered models.
+Prism Server is a powerful feature that allows you to expose your Prism-powered AI models through a standardized API. This makes it easy to integrate your custom AI solutions into various applications, including chat interfaces and other tools that support OpenAI-compatible APIs.
 
-## Server Concept Overview
+## How It Works
 
-Think of Prism Server as a bridge between OpenAI-compatible clients and your custom Prism implementations. It translates incoming OpenAI-style requests into Prism operations, allowing you to:
+Prism Server acts as a middleware, translating requests from OpenAI-compatible clients into Prism-specific operations. This means you can use tools like ChatGPT web UIs or any OpenAI SDK to interact with your custom Prism models.
 
-- Use existing ChatGPT tools and UIs with your models
-- Maintain OpenAI compatibility while using different providers
-- Create standardized API endpoints for your AI features
-- Serve multiple custom models through a single interface
+## Setting Up Prism Server
 
-## Setup and Configuration
+### 1. Enable Prism Server
 
-1. First, enable Prism Server in your `config/prism.php`:
+First, make sure Prism Server is enabled in your `config/prism.php` file:
 
 ```php
-return [
-    'prism_server' => [
-        'enabled' => env('PRISM_SERVER_ENABLED', true),
-    ],
-    // ... rest of config
-];
+'prism_server' => [
+    'enabled' => env('PRISM_SERVER_ENABLED', true),
+],
 ```
 
-2. Register your Prism models in a service provider (like `AppServiceProvider`):
+### 2. Register Your Prisms
+
+To make your Prism models available through the server, you need to register them. This is typically done in a service provider, such as `AppServiceProvider`:
 
 ```php
 use EchoLabs\Prism\Facades\Prism;
 use EchoLabs\Prism\Facades\PrismServer;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,117 +34,68 @@ class AppServiceProvider extends ServiceProvider
         PrismServer::register(
             'my-custom-model',
             fn () => Prism::text()
-                ->using('anthropic', 'claude-3-sonnet')
+                ->using('anthropic', 'claude-3-sonnet-20240229')
                 ->withSystemPrompt('You are a helpful assistant.')
         );
     }
 }
 ```
 
-## API Endpoints
+In this example, we're registering a model named `my-custom-model` that uses the Anthropic Claude 3 Sonnet model with a custom system message.
 
-Prism Server exposes two main OpenAI-compatible endpoints:
+## Using Prism Server
 
-### List Models
-```
-GET /prism/openai/v1/models
-```
-
-Returns available models in OpenAI format:
-```json
-{
-    "object": "list",
-    "data": [
-        {
-            "id": "my-custom-model",
-            "object": "model"
-        }
-    ]
-}
-```
+Once set up, Prism Server exposes two main endpoints:
 
 ### Chat Completions
-```
-POST /prism/openai/v1/chat/completions
-```
 
-Request body:
-```json
-{
-    "model": "my-custom-model",
-    "messages": [
-        {"role": "user", "content": "Hello, who are you?"}
-    ]
-}
-```
+To generate text using your registered Prism models:
 
-Response format:
-```json
-{
-    "id": "resp-123xyz",
-    "object": "chat.completion",
-    "created": 1709668964,
-    "model": "my-custom-model",
-    "choices": [
-        {
-            "message": {
-                "role": "assistant",
-                "content": "Hello! I'm your AI assistant..."
-            }
-        }
-    ]
-}
-```
-
-## Client Integration Examples
-
-### Using cURL
 ```bash
 curl -X POST "http://your-app.com/prism/openai/v1/chat/completions" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "my-custom-model",
-    "messages": [
-      {"role": "user", "content": "What is Laravel?"}
-    ]
-  }'
+     -H "Content-Type: application/json" \
+     -d '{
+  "model": "my-custom-model",
+  "messages": [
+    {"role": "user", "content": "Hello, who are you?"}
+  ]
+}'
 ```
 
-### Using OpenAI Client Libraries
-```php
-// PHP OpenAI Client
-$client = OpenAI::client('fake-key', [
-    'base_url' => 'http://your-app.com/prism/openai/v1'
-]);
+### List Available Models
 
-$response = $client->chat()->create([
-    'model' => 'my-custom-model',
-    'messages' => [
-        ['role' => 'user', 'content' => 'Hello!']
-    ]
-]);
+To get a list of all registered Prism models:
+
+```bash
+curl "http://your-app.com/prism/openai/v1/models"
 ```
 
-```javascript
-// JavaScript/Node.js
-import OpenAI from 'openai';
+## Integration with Open WebUI
 
-const openai = new OpenAI({
-    apiKey: 'fake-key',
-    baseURL: 'http://your-app.com/prism/openai/v1'
-});
+Prism Server works seamlessly with OpenAI-compatible chat interfaces like [Open WebUI](https://openwebui.com). Here's an example Docker Compose configuration:
 
-const response = await openai.chat.completions.create({
-    model: 'my-custom-model',
-    messages: [
-        { role: 'user', content: 'Hello!' }
-    ]
-});
+```yaml
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    environment:
+      OPENAI_API_BASE_URLS: "http://laravel:8080/prism/openai/v1"
+      WEBUI_SECRET_KEY: "your-secret-key"
+
+  laravel:
+    image: serversideup/php:8.3-fpm-nginx
+    volumes:
+      - ".:/var/www/html"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+    depends_on:
+      - open-webui
 ```
 
-### Using ChatGPT Web UIs
-Many ChatGPT-compatible UIs can be configured to use your Prism Server:
+With this setup, you can access your Prism models through a user-friendly chat interface at `http://localhost:3000`.
 
-1. Set the API Base URL to: `http://your-app.com/prism/openai/v1`
-2. Use any API key (it won't be validated)
-3. Select your custom model name from the model list
+By leveraging Prism Server, you can create powerful, custom AI experiences while maintaining compatibility with a wide ecosystem of tools and libraries. Whether you're building a chatbot, a content generation tool, or something entirely new, Prism Server provides the flexibility and standardization you need to succeed.
+

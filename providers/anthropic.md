@@ -19,3 +19,4 @@
 ## Limitations
 
 - Does not support the `SystemMessage` message type, we automatically convert `SystemMessage` to `UserMessage`.
+- Does not support `Image::fromURL`

@@ -63,9 +63,3 @@ $response = Prism::text()
     ->withPrompt('Hello, custom AI!')
     ->generate();
 ```
-
-> [!TIP]
-> Consider creating dedicated classes for message mapping and tool handling if your provider needs complex transformations.
-
-> [!IMPORTANT]
-> Always implement proper error handling and validate responses from your provider's API to ensure robust integration.
